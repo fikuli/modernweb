@@ -12,12 +12,6 @@ const App = () => {
 
   const [ newSearch, setNewSearch ] = useState('')
 
-  const personsToShow = persons.filter(person => person.name.toLowerCase().startsWith(newSearch.toLowerCase()))
-
-  const handleSearchChange = (event) => {
-    setNewSearch(event.target.value)
-  }
-
   const copyPers = (eleman) =>{
     setPersons(eleman)
   }
@@ -25,11 +19,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter newSearch={newSearch} handleSearchChange={handleSearchChange}/>
+      <Filter setNewSearch={setNewSearch}/>
       <h2>Add new</h2>
       <PersonForm persons={persons} copyPers={copyPers}/>
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow}/>
+      <Persons persons={persons} newSearch={newSearch}/>
     </div>
   )
 }

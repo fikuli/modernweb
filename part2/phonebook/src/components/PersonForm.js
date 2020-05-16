@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
 const PersonForm = (props) => {
-
     const [ newName, setNewName ] = useState('')
     const [ newNumber, setNewNumber ] = useState('')
     const addName = (event) => {
