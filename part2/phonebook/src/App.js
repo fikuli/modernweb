@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import axios from 'axios'
+import phoneService from './services/phonebook'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -10,16 +10,17 @@ const App = () => {
   const [ newSearch, setNewSearch ] = useState('')
 
   const copyPers = (eleman) =>{
+    console.log(eleman)
     setPersons(eleman)
   }
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    phoneService
+    .getAll()
+    .then(response => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(response)
       })
   }, [])
   console.log('render', persons.length, 'persons')
@@ -31,7 +32,7 @@ const App = () => {
       <h2>Add new</h2>
       <PersonForm persons={persons} copyPers={copyPers}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} newSearch={newSearch}/>
+      <Persons persons={persons} newSearch={newSearch} setPersons={setPersons}/>
     </div>
   )
 }
