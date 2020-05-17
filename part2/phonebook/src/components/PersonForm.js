@@ -26,8 +26,19 @@ const PersonForm = (props) => {
             const uu = props.persons.map(n=>n.name!==newName?n:response)
             console.log(uu)
             props.copyPers(uu)
+            props.setErrorMessage(`Changed number for ${newName}`)
+            setTimeout(() => {
+              props.setErrorMessage(null)
+            }, 5000)
             setNewName('')
             setNewNumber('')
+          })
+          .catch(error => {
+            props.setNegErrorMessage(`Information of ${newName} is removed from server`)
+            setTimeout(() => {
+              props.setNegErrorMessage(null)
+            }, 5000)
+            props.copyPers(props.persons.filter(n=>n.name!==newName))
           })
         }
         setNewName('')
@@ -43,6 +54,10 @@ const PersonForm = (props) => {
         .create(person)
         .then(response => {
         props.copyPers(props.persons.concat(response))
+        props.setErrorMessage(`Added number for ${newName}`)
+        setTimeout(() => {
+          props.setErrorMessage(null)
+        }, 5000)
 
         setNewName('')
         setNewNumber('')

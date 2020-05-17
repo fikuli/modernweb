@@ -1,34 +1,9 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
-    },
-    {
-      "name": "asd",
-      "number": "er",
-      "id": 4
-    },
-    {
-      "name": "asdeee",
-      "number": "dde",
-      "id": 5
-    },
-    {
-      "name": "ab",
-      "number": "rrr",
-      "id": 7
+      "name": "dddd",
+      "number": "asdasd",
+      "id": 6
     }
   ],
   "notes": [
