@@ -11,7 +11,7 @@ const PersonForm = (props) => {
         return person.name === newName;
       }
   
-      if(props.persons.findIndex(contains) != -1) {
+      if(props.persons.findIndex(contains) !== -1) {
         if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
           console.log(newName, '  hhe ', newNumber)
           const eleman = props.persons.find(n => n.name === newName)
