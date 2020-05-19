@@ -34,11 +34,10 @@ const PersonForm = (props) => {
             setNewNumber('')
           })
           .catch(error => {
-            props.setNegErrorMessage(`Information of ${newName} is removed from server`)
+            props.setNegErrorMessage(`${error.response.data.error}`)
             setTimeout(() => {
               props.setNegErrorMessage(null)
             }, 5000)
-            props.copyPers(props.persons.filter(n=>n.name!==newName))
           })
         }
         setNewName('')
@@ -61,6 +60,12 @@ const PersonForm = (props) => {
 
         setNewName('')
         setNewNumber('')
+      })
+      .catch(error => {
+        props.setNegErrorMessage(`${error.response.data.error}`)
+        setTimeout(() => {
+          props.setNegErrorMessage(null)
+        }, 5000)
       })
       }
     }
