@@ -1,3 +1,7 @@
+import { useSelector, useDispatch } from 'react-redux'
+const _ = require("lodash")
+
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,13 +21,50 @@ const asObject = (anecdote) => {
   }
 }
 
+export const upvote = (id) => {
+  return {
+    type: 'UPVOTE',
+    data: { id }
+  }
+}
+
+export const createNew = (content) => {
+  return {
+    type: 'CREATENEW',
+    data: { content }
+  }
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
-  return state
+  switch (action.type) {
+    case 'UPVOTE':
+      const id = action.data.id
+      const noteToChange = state.find(n => n.id === id)
+      const changedNote = {
+        ...noteToChange,
+        votes: noteToChange.votes + 1
+      }
+      const aa = state.map(note =>
+        note.id !== id ? note : changedNote
+      )
+      const sorted = _.orderBy(aa, ['votes'], ['desc']);
+      return sorted
+    case 'CREATENEW':
+      const abim = {
+        content: action.data.content,
+        id: getId(),
+        votes: 0
+      }
+      const ab = [...state, abim]
+      const ret = _.orderBy(ab, ['votes'], ['desc']);
+      return ret
+    default: return state
+  }
 }
 
 export default reducer
