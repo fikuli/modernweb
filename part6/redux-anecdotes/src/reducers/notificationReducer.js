@@ -8,18 +8,43 @@ export const updateMessage = (message) => {
   }
 }
 
-export const showVoteNotification = (content) => {
-  return {
-    type: 'UPVOTED',
-    data: { content }
+export const showVoteNotification = (content, timeout) => {
+
+  return async dispatch => {
+    dispatch({
+      type: 'UPVOTED',
+      data: { content }
+    }
+    )
+
+    await setTimeout(() => {
+      dispatch({
+        type: 'INIT',
+        data: {}
+      })
+    }, timeout*1000)
+
   }
 }
 
-export const showAddNotification = (content) => {
-  return {
-    type: 'ADDED',
+export const showAddNotification = (content, timeout) => {
+
+  return async dispatch => {
+    dispatch({
+      type: 'ADDED',
     data: { content }
+    }
+    )
+
+    await setTimeout(() => {
+      dispatch({
+        type: 'INIT',
+        data: {}
+      })
+    }, timeout*1000)
+
   }
+
 }
 
 export const init = () => {

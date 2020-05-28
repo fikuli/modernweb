@@ -14,6 +14,7 @@ const AnectodeList = () => {
     console.log(anecdotes)
     console.log(notification)
     console.log(filter)
+
     return anecdotes.filter(anectode=>_.startsWith(anectode.content.toLowerCase(), filter.toLowerCase()))
   })
 
@@ -21,14 +22,16 @@ const AnectodeList = () => {
 
   const dispatch = useDispatch()
 
-  const vote = (id, content) => {
+  const vote = (id, content, votes) => {
     console.log('vote', id)
-    dispatch(upvote(id))
-    dispatch(showVoteNotification(content))
+    const aaa = {
+      id,
+      content, 
+      votes
+    }
+    dispatch(upvote(aaa))
+    dispatch(showVoteNotification(content, 5))
 
-    setTimeout(() => {
-      dispatch(init())
-    }, 5000)
   }
 
 
@@ -43,7 +46,7 @@ const AnectodeList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+            <button onClick={() => vote(anecdote.id, anecdote.content, anecdote.votes)}>vote</button>
           </div>
         </div>
       )}

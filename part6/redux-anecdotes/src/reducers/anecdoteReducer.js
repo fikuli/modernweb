@@ -1,14 +1,9 @@
+import anecdoteService from '../services/anectodes'
+
 const _ = require("lodash")
 
 
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+const anecdotesAtStart = []
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
@@ -20,17 +15,37 @@ const asObject = (anecdote) => {
   }
 }
 
-export const upvote = (id) => {
-  return {
-    type: 'UPVOTE',
-    data: { id }
+export const upvote = (xxx) => {
+  return async dispatch => {
+    const newNote = await anecdoteService.upVoteAnectode(xxx.id, xxx)
+    dispatch({
+      type: 'UPVOTE',
+      data: newNote
+    })
   }
+
 }
 
 export const createNew = (content) => {
-  return {
-    type: 'CREATENEW',
-    data: { content }
+
+  return async dispatch => {
+    const newNote = await anecdoteService.createAnectode(content)
+    dispatch({
+      type: 'CREATENEW',
+      data: newNote,
+    })
+  }
+}
+
+export const initAns = () => {
+
+
+  return async dispatch => {
+    const notes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INITANECDOTES',
+      data: notes,
+    })
   }
 }
 
@@ -56,12 +71,14 @@ const anecdoteReducer = (state = initialState, action) => {
     case 'CREATENEW':
       const abim = {
         content: action.data.content,
-        id: getId(),
-        votes: 0
+        id: action.data.id,
+        votes: action.data.votes
       }
       const ab = [...state, abim]
       const ret = _.orderBy(ab, ['votes'], ['desc']);
       return ret
+    case 'INITANECDOTES':
+      return action.data
     default: return state
   }
 }

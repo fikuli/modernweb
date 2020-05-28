@@ -8,19 +8,15 @@ const AnectodeForm = () => {
 
   const dispatch = useDispatch()
 
-  const create = (event) => {
+  const create = async (event) => {
     event.preventDefault()
     console.log('create')
 
     const content = event.target.anectode.value
     event.target.anectode.value = ''
+
     dispatch(createNew(content))
-    dispatch(showAddNotification(content))
-
-    setTimeout(() => {
-      dispatch(init())
-    }, 5000)
-
+    dispatch(showAddNotification(content,5))
   }
 
   return (
