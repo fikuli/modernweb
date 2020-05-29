@@ -1,12 +1,10 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { createNew } from '../reducers/anecdoteReducer'
-import {showAddNotification, init} from '../reducers/notificationReducer'
+import {showAddNotification} from '../reducers/notificationReducer'
 
 
-const AnectodeForm = () => {
-
-  const dispatch = useDispatch()
+const AnectodeForm = (props) => {
 
   const create = async (event) => {
     event.preventDefault()
@@ -15,8 +13,8 @@ const AnectodeForm = () => {
     const content = event.target.anectode.value
     event.target.anectode.value = ''
 
-    dispatch(createNew(content))
-    dispatch(showAddNotification(content,5))
+    props.createNew(content)
+    props.showAddNotification(content,5)
   }
 
   return (
@@ -31,4 +29,12 @@ const AnectodeForm = () => {
 
 }
 
-export default AnectodeForm
+const mapDispatchToProps = {
+  createNew,
+  showAddNotification,
+}
+
+
+const ConnectedAnectodeForm = connect(null, mapDispatchToProps)(AnectodeForm)
+export default ConnectedAnectodeForm
+

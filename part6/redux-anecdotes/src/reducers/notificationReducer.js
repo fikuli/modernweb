@@ -1,6 +1,8 @@
 const initialState = null
 
 
+let timeOutId = null
+
 export const updateMessage = (message) => {
   return {
     type: 'UPDATE',
@@ -10,6 +12,8 @@ export const updateMessage = (message) => {
 
 export const showVoteNotification = (content, timeout) => {
 
+  if(timeOutId !== null) clearTimeout(timeOutId)
+
   return async dispatch => {
     dispatch({
       type: 'UPVOTED',
@@ -17,7 +21,7 @@ export const showVoteNotification = (content, timeout) => {
     }
     )
 
-    await setTimeout(() => {
+    timeOutId = await setTimeout(() => {
       dispatch({
         type: 'INIT',
         data: {}
@@ -29,6 +33,8 @@ export const showVoteNotification = (content, timeout) => {
 
 export const showAddNotification = (content, timeout) => {
 
+  if(timeOutId !== null) clearTimeout(timeOutId)
+
   return async dispatch => {
     dispatch({
       type: 'ADDED',
@@ -36,7 +42,7 @@ export const showAddNotification = (content, timeout) => {
     }
     )
 
-    await setTimeout(() => {
+    timeOutId = await setTimeout(() => {
       dispatch({
         type: 'INIT',
         data: {}

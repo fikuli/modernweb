@@ -1,36 +1,23 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { upvote } from '../reducers/anecdoteReducer'
-import { showVoteNotification, init } from '../reducers/notificationReducer'
+import { showVoteNotification } from '../reducers/notificationReducer'
 import Filter from './Filter'
 
 const _ = require("lodash")
 
 
-const AnectodeList = () => {
-
-  
-  const anecdotes = useSelector(({anecdotes, notification, filter})=>{
-    console.log(anecdotes)
-    console.log(notification)
-    console.log(filter)
-
-    return anecdotes.filter(anectode=>_.startsWith(anectode.content.toLowerCase(), filter.toLowerCase()))
-  })
-
-  
-
-  const dispatch = useDispatch()
+const AnectodeList = (props) => {
 
   const vote = (id, content, votes) => {
     console.log('vote', id)
     const aaa = {
       id,
-      content, 
+      content,
       votes
     }
-    dispatch(upvote(aaa))
-    dispatch(showVoteNotification(content, 5))
+    props.upvote(aaa)
+    props.showVoteNotification(content, 5)
 
   }
 
@@ -39,7 +26,7 @@ const AnectodeList = () => {
     <div>
       <h2>Anecdotes</h2>
       <Filter />
-      {anecdotes.map(anecdote =>
+      {props.anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -54,5 +41,14 @@ const AnectodeList = () => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return { anecdotes: state.anecdotes.filter(anectode => _.startsWith(anectode.content.toLowerCase(), state.filter.toLowerCase())) }
+}
 
-export default AnectodeList
+const mapDispatchToProps = {
+  upvote,
+  showVoteNotification,
+}
+
+const ConnectedAnectodeList = connect(mapStateToProps, mapDispatchToProps)(AnectodeList)
+export default ConnectedAnectodeList
