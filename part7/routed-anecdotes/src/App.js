@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link, useRouteMatch
 } from "react-router-dom"
 import Menu from './components/Menu'
 import CreateNew from './components/CreateNew'
@@ -29,6 +29,15 @@ const App = () => {
       id: '2'
     }
   ])
+
+
+  const match = useRouteMatch('/anecdotes/:id')
+  const selectedAnecdote = match 
+    ? anecdotes.find(anecdote => anecdote.id === match.params.id)
+    : null
+
+    
+
 
   const [notification, setNotification] = useState('')
 
@@ -60,14 +69,13 @@ const App = () => {
   }
 
   return (
-    <Router>
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
         <Notification message={notification}/>
         <Switch>
           <Route path="/anecdotes/:id">
-            <Anecdote anecdotes={anecdotes} />
+            <Anecdote selectedAnecdote={selectedAnecdote} />
           </Route>
           <Route path="/about">
             <About />
@@ -81,7 +89,6 @@ const App = () => {
         </Switch>
         <Footer />
       </div>
-    </Router>
   )
 }
 
