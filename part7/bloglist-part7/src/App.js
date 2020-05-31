@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
+import { Navbar, Nav } from 'react-bootstrap'
 
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import Login from './components/Login'
 import UserDetails from './components/UserDetails'
+import BlogDetails from './components/BlogDetails'
 import blogService from './services/blogs'
 import userService from './services/users'
 import { updateErrorMessage } from './reducers/errorMessageReducer'
@@ -142,9 +144,15 @@ const App = () => {
     ? allUsers.find(usx => usx.id === match.params.id)
     : null
 
+  const match2 = useRouteMatch('/blogs/:id')
+  const selectedBlog = match2
+    ? blogs.find(usx => usx.id === match2.params.id)
+    : null
 
-    console.log('------------')
-    console.log(selectedUser)
+  const match3 = useRouteMatch('/loggeduser/:id')
+  const logged = match3
+    ? allUsers.find(usx => usx.username === match3.params.id)
+    : null
 
   if (user === null || user.wrongPwd) {
     return (
@@ -157,17 +165,40 @@ const App = () => {
   const padding = {
     padding: 5
   }
+  console.log('************')
 
+  console.log(user)
 
   return (
     <div>
-      <Link style={padding} to="/">blogs</Link>
-      <Link style={padding} to="/users">users</Link>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">blogs</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">users</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to={`/loggeduser/${user.username}`}>{user.name} logged in <button onClick={logout}>logout</button></Link>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+
 
       <Notification message={errorMessage} />
       <h2>blogs</h2>
       <p>{user.name} logged in <button onClick={logout}>logout</button></p>
       <Switch>
+        <Route path="/loggeduser/:id">
+          <UserDetails selectedUser={logged} />
+        </Route>
+        <Route path="/blogs/:id">
+          <BlogDetails selectedBlog={selectedBlog} updateBlog={updateBlog} />
+        </Route>
         <Route path="/users/:id">
           <UserDetails selectedUser={selectedUser} />
         </Route>
@@ -179,7 +210,7 @@ const App = () => {
         </Route>
       </Switch>
 
-    </div>
+    </div >
   )
 }
 

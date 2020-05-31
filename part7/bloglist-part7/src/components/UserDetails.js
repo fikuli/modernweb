@@ -1,14 +1,7 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
-import {
-  BrowserRouter as Router,
-  Switch, Route, Link
-} from 'react-router-dom'
 
 const UserDetails = ({ selectedUser }) => {
-
-  console.log('**************')
-  console.log(selectedUser)
 
   if (!selectedUser) {
     return null
