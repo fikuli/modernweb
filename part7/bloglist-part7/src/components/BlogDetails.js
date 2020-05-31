@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 import blogService from '../services/blogs'
 
 const BlogDetails = ({ selectedBlog, updateBlog }) => {
@@ -47,7 +47,7 @@ const BlogDetails = ({ selectedBlog, updateBlog }) => {
         </thead>
         <tbody>
           <tr><td><a href={selectedBlog.url}>{selectedBlog.url}</a></td></tr>
-          <tr><td>has {selectedBlog.likes} likes <button onClick={like}>like</button></td></tr>
+          <tr><td>has {selectedBlog.likes} likes <Button onClick={like}>like</Button></td></tr>
           <tr><td>added by {selectedBlog.user.name}</td></tr>
         </tbody>
       </Table>
@@ -62,7 +62,7 @@ const BlogDetails = ({ selectedBlog, updateBlog }) => {
         name="Comment"
         onChange={({ target }) => setComment(target.value)}
       />
-      <button onClick={addComment}>add comment</button>
+      <Button onClick={addComment}>add comment</Button>
 
       <div>
         <Table striped bordered hover size="sm">

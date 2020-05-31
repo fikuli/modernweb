@@ -1,4 +1,5 @@
 import React from 'react'
+import { Alert } from 'react-bootstrap'
 
 const Notification = ({ message }) => {
 
@@ -18,8 +19,10 @@ const Notification = ({ message }) => {
   }
 
   return (
-    <div className="notification" style={errorStyle}>
-      {message}
+    <div>
+      <Alert variant="info">
+        {message}
+      </Alert>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button } from 'react-bootstrap'
 
 const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   const blogStyle = {
@@ -40,27 +41,27 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   if (visible && user.username === bblog.user.username) {
     return (
       <div style={blogStyle} className='blog'>
-        <p>{bblog.title} - {bblog.author} <button onClick={showDetails}>{view}</button></p>
+        <p>{bblog.title} - {bblog.author} <Button onClick={showDetails}>{view}</Button></p>
         <p>{bblog.url}</p>
-        <p>likes {bblog.likes} <button onClick={like}>like</button></p>
+        <p>likes {bblog.likes} <Button onClick={like}>like</Button></p>
         <p>{bblog.user.name}</p>
-        <p><button onClick={deleteEntry}>delete</button></p>
+        <p><Button onClick={deleteEntry}>delete</Button></p>
       </div>
     )
   }
   else if(visible){
     return (
       <div style={blogStyle} className='blog'>
-        <p>{bblog.title} - {bblog.author} <button onClick={showDetails}>{view}</button></p>
+        <p>{bblog.title} - {bblog.author} <Button onClick={showDetails}>{view}</Button></p>
         <p>{bblog.url}</p>
-        <p>likes {bblog.likes} <button onClick={like}>like</button></p>
+        <p>likes {bblog.likes} <Button onClick={like}>like</Button></p>
         <p>{bblog.user.name}</p>
       </div>
     )
   }
   return (
     <div style={blogStyle} className='blog'>
-      {bblog.title} - {bblog.author} <button onClick={showDetails}>{view}</button>
+      {bblog.title} - {bblog.author} <Button onClick={showDetails}>{view}</Button>
     </div>
   )
 }

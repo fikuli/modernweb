@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react'
+import { Button } from 'react-bootstrap'
 
 const Login = ({ login }) => {
 
@@ -41,7 +42,7 @@ const Login = ({ login }) => {
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button id="login-button" type="submit">login</button>
+        <Button id="login-button" type="submit">login</Button>
       </form>
     </div>
 

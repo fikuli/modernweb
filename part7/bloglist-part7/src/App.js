@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 
 import Blogs from './components/Blogs'
 import Users from './components/Users'
@@ -182,9 +182,10 @@ const App = () => {
               <Link style={padding} to="/users">users</Link>
             </Nav.Link>
             <Nav.Link href="#" as="span">
-              <Link style={padding} to={`/loggeduser/${user.username}`}>{user.name} logged in <button onClick={logout}>logout</button></Link>
+              <Link style={padding} to={`/loggeduser/${user.username}`}>{user.name} logged in</Link>
             </Nav.Link>
           </Nav>
+          <Button onClick={logout}>logout</Button>
         </Navbar.Collapse>
       </Navbar>
 
