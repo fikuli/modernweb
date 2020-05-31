@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import Blogs from './components/Blogs'
 import Login from './components/Login'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import { updateErrorMessage } from './reducers/errorMessageReducer'
-import { updateUser } from './reducers/userReducer'
+import { updateUser, userLogin } from './reducers/userReducer'
 import { initializeBlogs, createNewBlog, modifyBlog, removeBlog } from './reducers/blogsReducer'
 
 
 const App = () => {
   const dispatch = useDispatch()
+  const user = useSelector((eleman) => eleman.user)
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -27,6 +27,29 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  useEffect(() => {
+    console.log('uuuuuuuuuu')
+    console.log(user)
+    if (user !== null) {
+      if (user.wrongPwd) {
+        dispatch(updateErrorMessage('error: wrong credentials'))
+        //setErrorMessage('error: wrong credentials')
+        setTimeout(() => {
+          dispatch(updateErrorMessage(null))
+          //setErrorMessage(null)
+        }, 5000)
+      }
+      else {
+        window.localStorage.setItem(
+          'loggedBlogsappUser', JSON.stringify(user)
+        )
+
+        blogService.setToken(user.token)
+      }
+
+    }
+  }, [user])
 
   const logout = () => {
     window.localStorage.removeItem('loggedBlogsappUser')
@@ -94,35 +117,15 @@ const App = () => {
   }
 
   const login = async (username, password) => {
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-
-      window.localStorage.setItem(
-        'loggedBlogsappUser', JSON.stringify(user)
-      )
-
-      blogService.setToken(user.token)
-      //setUser(user)
-      dispatch(updateUser(user))
-    } catch (exception) {
-      dispatch(updateErrorMessage('error: wrong credentials'))
-      //setErrorMessage('error: wrong credentials')
-      setTimeout(() => {
-        dispatch(updateErrorMessage(null))
-        //setErrorMessage(null)
-      }, 5000)
-    }
+    dispatch(userLogin(username, password))
   }
 
   const errorMessage = useSelector((eleman) => eleman.error)
 
-  const user = useSelector((eleman) => eleman.user)
 
   const blogs = useSelector((eleman) => eleman.blogs)
 
-  if (user === null) {
+  if (user === null || user.wrongPwd) {
     return (
       <div className="loginClass">
         <Notification message={errorMessage} />
