@@ -8,17 +8,14 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { updateErrorMessage } from './reducers/errorMessageReducer'
 import { updateUser } from './reducers/userReducer'
-import { updateBlogs } from './reducers/blogsReducer'
+import { initializeBlogs, createNewBlog, modifyBlog, removeBlog } from './reducers/blogsReducer'
 
 
 const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      //setBlogs(blogs)
-      dispatch(updateBlogs(blogs))
-    )
+    dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
@@ -39,20 +36,14 @@ const App = () => {
   }
 
 
-
-
   const createBlog = async (title, author, url) => {
     try {
-      const blog = await blogService.create({
+      dispatch(createNewBlog({
         title, author, url
-      })
-
-      const result = await blogService.getAll()
-      //setBlogs(result)
-      dispatch(updateBlogs(result))
+      }))
 
       //setErrorMessage(`success: a new blog added - ${blog.title}`)
-      dispatch(updateErrorMessage(`success: a new blog added - ${blog.title}`))
+      dispatch(updateErrorMessage(`success: a new blog added - ${title}`))
       setTimeout(() => {
         dispatch(updateErrorMessage(null))
         //setErrorMessage(null)
@@ -70,11 +61,10 @@ const App = () => {
 
   const updateBlog = async (id, newObject) => {
     try {
-      await blogService.update(id, newObject)
-
-      const result = await blogService.getAll()
-      //setBlogs(result)
-      dispatch(updateBlogs(result))
+      console.log('aaaaaaaaaaa')
+      console.log(id)
+      console.log(newObject)
+      dispatch(modifyBlog(id, newObject))
 
     }
     catch (exception) {
@@ -90,11 +80,7 @@ const App = () => {
 
   const deleteBlog = async (id) => {
     try {
-      await blogService.remove(id)
-
-      const result = await blogService.getAll()
-      //setBlogs(result)
-      dispatch(updateBlogs(result))
+      dispatch(removeBlog(id))
     }
     catch (exception) {
       dispatch(updateErrorMessage(`error: ${exception.response.data.error}`))
