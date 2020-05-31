@@ -3,11 +3,21 @@ import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Blogs from './components/Blogs'
+import Users from './components/Users'
 import Login from './components/Login'
 import blogService from './services/blogs'
+import userService from './services/users'
 import { updateErrorMessage } from './reducers/errorMessageReducer'
 import { updateUser, userLogin } from './reducers/userReducer'
 import { initializeBlogs, createNewBlog, modifyBlog, removeBlog } from './reducers/blogsReducer'
+import { getAllUsers } from './reducers/allUsersReducer'
+
+
+
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from 'react-router-dom'
 
 
 const App = () => {
@@ -16,6 +26,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(getAllUsers())
   }, [])
 
   useEffect(() => {
@@ -25,6 +36,7 @@ const App = () => {
       dispatch(updateUser(user))
       //setUser(user)
       blogService.setToken(user.token)
+      userService.setToken(user.token)
     }
   }, [])
 
@@ -46,6 +58,7 @@ const App = () => {
         )
 
         blogService.setToken(user.token)
+        userService.setToken(user.token)
       }
 
     }
@@ -56,6 +69,7 @@ const App = () => {
     //setUser(null)
     dispatch(updateUser(null))
     blogService.setToken(null)
+    userService.setToken(null)
   }
 
 
@@ -124,6 +138,7 @@ const App = () => {
 
 
   const blogs = useSelector((eleman) => eleman.blogs)
+  const allUsers = useSelector((eleman) => eleman.allUsers)
 
   if (user === null || user.wrongPwd) {
     return (
@@ -133,13 +148,29 @@ const App = () => {
       </div>
     )
   }
+  const padding = {
+    padding: 5
+  }
 
   return (
-    <div>
-      <Notification message={errorMessage} />
-      <Blogs user={user} logout={logout} createBlog={createBlog} blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} />
+    <Router>
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+      </div>
 
-    </div>
+      <Notification message={errorMessage} />
+      <h2>blogs</h2>
+      <p>{user.name} logged in <button onClick={logout}>logout</button></p>
+      <Switch>
+        <Route path="/users">
+          <Users allUsers={allUsers}/>
+        </Route>
+        <Route path="/">
+          <Blogs user={user} createBlog={createBlog} blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} />
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 

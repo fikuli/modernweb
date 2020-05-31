@@ -3,7 +3,7 @@ import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 
-const Blogs = ({ user, logout, createBlog, blogs, updateBlog, deleteBlog }) => {
+const Blogs = ({ user, createBlog, blogs, updateBlog, deleteBlog }) => {
   const blogsRef = React.createRef()
 
 
@@ -19,9 +19,6 @@ const Blogs = ({ user, logout, createBlog, blogs, updateBlog, deleteBlog }) => {
 
   return (
     <div>
-
-      <h2>blogs</h2>
-      <p>{user.name} logged in <button onClick={logout}>logout</button></p>
 
       <Togglable buttonLabel='create new' ref={blogsRef}>
         <BlogForm createBlog={createBlogx} />

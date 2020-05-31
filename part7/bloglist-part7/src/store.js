@@ -5,12 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import errorMessageReducer from './reducers/errorMessageReducer'
 import userReducer from './reducers/userReducer'
 import blogsReducer from './reducers/blogsReducer'
+import allUsersReducer from './reducers/allUsersReducer'
 
 
 const reducer = combineReducers({
   error: errorMessageReducer,
   user: userReducer,
-  blogs: blogsReducer
+  blogs: blogsReducer,
+  allUsers: allUsersReducer
 })
 
 
