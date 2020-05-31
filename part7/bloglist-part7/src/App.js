@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import Login from './components/Login'
+import UserDetails from './components/UserDetails'
 import blogService from './services/blogs'
 import userService from './services/users'
 import { updateErrorMessage } from './reducers/errorMessageReducer'
@@ -12,12 +13,7 @@ import { updateUser, userLogin } from './reducers/userReducer'
 import { initializeBlogs, createNewBlog, modifyBlog, removeBlog } from './reducers/blogsReducer'
 import { getAllUsers } from './reducers/allUsersReducer'
 
-
-
-import {
-  BrowserRouter as Router,
-  Switch, Route, Link
-} from 'react-router-dom'
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
 
 
 const App = () => {
@@ -140,6 +136,16 @@ const App = () => {
   const blogs = useSelector((eleman) => eleman.blogs)
   const allUsers = useSelector((eleman) => eleman.allUsers)
 
+
+  const match = useRouteMatch('/users/:id')
+  const selectedUser = match
+    ? allUsers.find(usx => usx.id === match.params.id)
+    : null
+
+
+    console.log('------------')
+    console.log(selectedUser)
+
   if (user === null || user.wrongPwd) {
     return (
       <div className="loginClass">
@@ -152,25 +158,28 @@ const App = () => {
     padding: 5
   }
 
+
   return (
-    <Router>
-      <div>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
-      </div>
+    <div>
+      <Link style={padding} to="/">blogs</Link>
+      <Link style={padding} to="/users">users</Link>
 
       <Notification message={errorMessage} />
       <h2>blogs</h2>
       <p>{user.name} logged in <button onClick={logout}>logout</button></p>
       <Switch>
+        <Route path="/users/:id">
+          <UserDetails selectedUser={selectedUser} />
+        </Route>
         <Route path="/users">
-          <Users allUsers={allUsers}/>
+          <Users allUsers={allUsers} />
         </Route>
         <Route path="/">
           <Blogs user={user} createBlog={createBlog} blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} />
         </Route>
       </Switch>
-    </Router>
+
+    </div>
   )
 }
 
