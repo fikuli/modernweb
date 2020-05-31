@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Notification from './components/Notification'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Blogs from './components/Blogs'
 import Login from './components/Login'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { updateErrorMessage } from './reducers/errorMessageReducer'
+import { updateUser } from './reducers/userReducer'
+import { updateBlogs } from './reducers/blogsReducer'
 
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
-
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+      //setBlogs(blogs)
+      dispatch(updateBlogs(blogs))
     )
   }, [])
 
@@ -23,14 +25,16 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogsappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(updateUser(user))
+      //setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
 
   const logout = () => {
     window.localStorage.removeItem('loggedBlogsappUser')
-    setUser(null)
+    //setUser(null)
+    dispatch(updateUser(null))
     blogService.setToken(null)
   }
 
@@ -44,16 +48,21 @@ const App = () => {
       })
 
       const result = await blogService.getAll()
-      setBlogs(result)
+      //setBlogs(result)
+      dispatch(updateBlogs(result))
 
-      setErrorMessage(`success: a new blog added - ${blog.title}`)
+      //setErrorMessage(`success: a new blog added - ${blog.title}`)
+      dispatch(updateErrorMessage(`success: a new blog added - ${blog.title}`))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(updateErrorMessage(null))
+        //setErrorMessage(null)
       }, 5000)
     } catch (exception) {
-      setErrorMessage(`error: ${exception.response.data.error}`)
+      //setErrorMessage(`error: ${exception.response.data.error}`)
+      dispatch(updateErrorMessage(`error: ${exception.response.data.error}`))
       setTimeout(() => {
-        setErrorMessage(null)
+        //setErrorMessage(null)
+        dispatch(updateErrorMessage(null))
       }, 5000)
     }
   }
@@ -64,12 +73,16 @@ const App = () => {
       await blogService.update(id, newObject)
 
       const result = await blogService.getAll()
-      setBlogs(result)
+      //setBlogs(result)
+      dispatch(updateBlogs(result))
+
     }
     catch (exception) {
-      setErrorMessage(`error: ${exception.response.data.error}`)
+      //setErrorMessage(`error: ${exception.response.data.error}`)
+      dispatch(updateErrorMessage(`error: ${exception.response.data.error}`))
       setTimeout(() => {
-        setErrorMessage(null)
+        //setErrorMessage(null)
+        dispatch(updateErrorMessage(null))
       }, 5000)
       return 0
     }
@@ -80,12 +93,15 @@ const App = () => {
       await blogService.remove(id)
 
       const result = await blogService.getAll()
-      setBlogs(result)
+      //setBlogs(result)
+      dispatch(updateBlogs(result))
     }
     catch (exception) {
-      setErrorMessage(`error: ${exception.response.data.error}`)
+      dispatch(updateErrorMessage(`error: ${exception.response.data.error}`))
+      //setErrorMessage(`error: ${exception.response.data.error}`)
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(updateErrorMessage(null))
+        //setErrorMessage(null)
       }, 5000)
       return 0
     }
@@ -102,15 +118,23 @@ const App = () => {
       )
 
       blogService.setToken(user.token)
-      setUser(user)
+      //setUser(user)
+      dispatch(updateUser(user))
     } catch (exception) {
-      setErrorMessage('error: wrong credentials')
+      dispatch(updateErrorMessage('error: wrong credentials'))
+      //setErrorMessage('error: wrong credentials')
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(updateErrorMessage(null))
+        //setErrorMessage(null)
       }, 5000)
     }
   }
 
+  const errorMessage = useSelector((eleman) => eleman.error)
+
+  const user = useSelector((eleman) => eleman.user)
+
+  const blogs = useSelector((eleman) => eleman.blogs)
 
   if (user === null) {
     return (
