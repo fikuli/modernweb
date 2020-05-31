@@ -191,7 +191,6 @@ const App = () => {
 
       <Notification message={errorMessage} />
       <h2>blogs</h2>
-      <p>{user.name} logged in <button onClick={logout}>logout</button></p>
       <Switch>
         <Route path="/loggeduser/:id">
           <UserDetails selectedUser={logged} />

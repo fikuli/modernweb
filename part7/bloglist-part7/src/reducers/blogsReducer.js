@@ -34,6 +34,7 @@ export const createNewBlog = content => {
 
 export const modifyBlog = (id, newObject) => {
   return async dispatch => {
+    console.log(newObject)
     const response = await blogService.update(id, newObject)
 
     console.log('bbbbbbbbbbb')
